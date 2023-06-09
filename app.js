@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
       current.forEach(index => {
         squares[currentPosition + index].classList.add('tetromino')
-        //squares[currentPosition + index].style.backgroundColor = colors[random]
+        squares[currentPosition + index].style.backgroundColor = colors[random]
         squares[currentPosition + index].innerHTML = "[ ]"
       })
     }
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function undraw() {
       current.forEach(index => {
         squares[currentPosition + index].classList.remove('tetromino')
-        //squares[currentPosition + index].style.backgroundColor = ''
+        squares[currentPosition + index].style.backgroundColor = ''
         squares[currentPosition + index].innerHTML = "&nbsp&nbsp&nbsp."
       })
     }
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
       //remove any trace of a tetromino form the entire grid
       displaySquares.forEach(square => {
         square.classList.remove('tetromino')
-        //square.style.backgroundColor = ''
+        square.style.backgroundColor = ''
         square.innerHTML = "&nbsp&nbsp&nbsp."
       })
       upNextTetrominoes[nextRandom].forEach( index => {
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.forEach(index => {
                 squares[index].classList.remove('taken')
                 squares[index].classList.remove('tetromino')
-                //squares[index].style.backgroundColor = ''
+                squares[index].style.backgroundColor = ''
                 squares[index].innerHTML = "&nbsp&nbsp&nbsp."
             })
             const squaresRemoved = squares.splice(i, width)
