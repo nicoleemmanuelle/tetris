@@ -131,10 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
   
     //move down function
     function moveDown() {
+      if (current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
+        freeze()
+      } else {
         undraw()
         currentPosition += width
         draw()
         freeze()
+      }
+        
     }
   
     //freeze function
@@ -258,19 +263,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if(tryCurrentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
             tryCurrentRotation = 0
         }
-        let tryCurrent = theTetrominoes[random][tryCurrentRotation] 
-        
-        undraw()
-        iIsPrevAtLeft = current.every(index=> (currentPosition + index) % width < 5)
-        currentRotation ++
-        if(currentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
-          currentRotation = 0
+        let tryCurrent = theTetrominoes[random][tryCurrentRotation]
+        if (tryCurrent.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+            
         }
-        current = theTetrominoes[random][currentRotation]
-        /*checkRotatedPosition()*/
-        cRP()
-        current = theTetrominoes[random][currentRotation]
-        draw()
+        else {
+          undraw()
+          iIsPrevAtLeft = current.every(index=> (currentPosition + index) % width < 5)
+          currentRotation ++
+          if(currentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
+            currentRotation = 0
+          }
+          current = theTetrominoes[random][currentRotation]
+          /*checkRotatedPosition()*/
+          cRP()
+          current = theTetrominoes[random][currentRotation]
+          draw()
+        }
+        
     }
     /////////
   
