@@ -1,0 +1,97 @@
+body {
+    color: #1ac550;
+    background-color: black;
+}
+
+h1, h2, p {
+    font-family: 'Press Start 2P', cursive;
+}
+
+h1{
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 15px;
+}
+p {
+    font-size: 10px;
+}
+#start-button {
+    background-color: #1ac550;
+    color: black;
+    font-family: 'Press Start 2P', cursive;
+    border: none;
+}
+
+#start-button:hover {
+    cursor: pointer;
+}
+
+#gameboard {
+    /*position: relative;*/
+    /*background-color: aqua;*/
+    width: 350px;
+    height: 440px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.border {
+    width: 240px;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+}
+
+.border div {
+    width: 20px;
+    height: 20px;
+}
+.right-border {
+    margin-left: 200px;
+}
+.container {
+    display: flex;
+    margin-left: 20px;
+    /*justify-content: center;*/
+}
+
+.grid {
+    width: 200px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: black;
+}
+
+.grid div {
+    height: 20px;
+    width: 20px;
+    font-weight: bold;
+}
+
+
+/*
+.tetromino {
+    background-color: blue;
+}
+*/
+
+.mini-grid {
+    /*margin-top: auto;
+    margin-bottom: auto;*/
+    margin-left: 50px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: black;
+}
+
+.mini-grid div {
+    height: 20px;
+    width: 20px;
+}
