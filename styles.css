@@ -3,15 +3,19 @@ body {
     background-color: black;
 }
 
-h1, h2, p {
+h1, h2, h3, p {
     font-family: 'Press Start 2P', cursive;
 }
 
-h1{
+h1 {
+    font-size: 35px;
+}
+
+h2{
     font-size: 25px;
 }
 
-h2 {
+h3 {
     font-size: 15px;
 }
 
@@ -31,6 +35,20 @@ p {
 
 #high-score {
     font-size: 20px;
+}
+
+#game-over-container {
+    /*background-color: #1ac550;*/
+    width: 140px;
+    position: absolute;
+    margin-top: 200px;
+    margin-left: 50px;
+}
+
+#game-over {
+    color: black;
+    font-size: 10px;
+    text-align: center;
 }
 
 #gameboard {
