@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let squares = Array.from(document.querySelectorAll('.grid div'))
     let smallSquares = Array.from(document.querySelectorAll('.mini-grid div'))
     const scoreDisplay = document.querySelector('#score')
+    const newGame = document.querySelector('#new-game')
     const startBtn = document.querySelector('#start-button')
     const width = 10
     let nextRandom = 0
@@ -116,30 +117,24 @@ document.addEventListener('DOMContentLoaded', () => {
   
     //assign functions to keyCodes
     function control(e) {
-      if((e.keyCode === 37) || (e.keyCode === 65)) {
+      if((e.keyCode === 37) || (e.keyCode === 65) || (e.keyCode === 74)) {
         moveLeft()
-      } else if ((e.keyCode === 38) || (e.keyCode === 87)) {
+      } else if ((e.keyCode === 38) || (e.keyCode === 87) || (e.keyCode === 73)) {
         rotate()
-      } else if ((e.keyCode === 39) || (e.keyCode === 68)) {
+      } else if ((e.keyCode === 39) || (e.keyCode === 68) || (e.keyCode === 76)) {
         moveRight()
-      } else if ((e.keyCode === 40) || (e.keyCode === 83)) {
+      } else if ((e.keyCode === 40) || (e.keyCode === 83) || (e.keyCode === 75)) {
         moveDown()
       }
     }
-    /*document.addEventListener('keyup', control)*/
+    /*document.addEventListener('keydown', control)*/
   
     //move down function
     function moveDown() {
+        undraw()
+        currentPosition += width
         draw()
-        if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
-          current.forEach(index => squares[currentPosition + index].classList.add('taken'))
-        } else {
-          undraw()
-          currentPosition += width
-          draw()
-          freeze()
-        }
-        
+        freeze()
     }
   
     //freeze function
@@ -154,9 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPosition = 3
         draw()
         displayShape()
-        freeze()
         addScore()
-        draw()
+        gameOver()
       }
     }
   
@@ -266,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         let tryCurrent = theTetrominoes[random][tryCurrentRotation] 
         
-    
         undraw()
         iIsPrevAtLeft = current.every(index=> (currentPosition + index) % width < 5)
         currentRotation ++
@@ -303,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
       //remove any trace of a tetromino form the entire grid
       displaySquares.forEach(square => {
         square.classList.remove('tetromino')
-        square.style.backgroundColor = ''
+        //square.style.backgroundColor = ''
         square.innerHTML = "&nbsp&nbsp&nbsp."
       })
       upNextTetrominoes[nextRandom].forEach( index => {
@@ -318,10 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (timerId) {
         clearInterval(timerId)
         timerId = null
-        document.removeEventListener('keyup', control)
+        document.removeEventListener('keydown', control)
       } 
 
-      else if (isGameOver && timerId == null) {
+      else if (isGameOver && timerId === null) {
         location.reload();
       }
       
@@ -331,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timerId = setInterval(moveDown, 400)
         //nextRandom = Math.floor(Math.random()*theTetrominoes.length)
         displayShape()
-        document.addEventListener('keyup', control)
+        document.addEventListener('keydown', control)
       }
     })
   
@@ -343,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // pause 
         clearInterval(timerId)
         timerId = null
-        document.removeEventListener('keyup', control)
+        document.removeEventListener('keydown', control)
 
         if(row.every(index => squares[index].classList.contains('taken'))) {
             
@@ -366,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // resume
         undraw()
         displayShape()
-        document.addEventListener('keyup', control)
+        document.addEventListener('keydown', control)
         timerId = setInterval(moveDown, 400)
       }
     }
@@ -374,14 +367,16 @@ document.addEventListener('DOMContentLoaded', () => {
     //game over
     function gameOver() {
       if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
-        scoreDisplay.innerHTML = 'end'
-        clearInterval(timerId)
-        /*timerId = null*/
-        isGameOver = true
-        startBtn.innerHTML = "New game"
-        document.removeEventListener('keyup', control)
+        draw()
+          scoreDisplay.innerHTML = 'end'
+          startBtn.innerHTML = 'New Game'
+          clearInterval(timerId)
+          timerId = null
+          isGameOver = true
+          console.log(timerId)
+          document.removeEventListener('keydown', control)
+        }
       }
       //current.some(index => squares[3 + index].classList.contains('taken'))
-    }
   
   })
