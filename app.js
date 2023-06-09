@@ -405,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (score > highScore) {
           highScore = score
           localStorage.setItem("highScore", highScore);
+          highScoreValue.innerHTML = localStorage.getItem("highScore")
         }
       }
     }
