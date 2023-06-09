@@ -14,6 +14,7 @@ h1{
 h2 {
     font-size: 15px;
 }
+
 p {
     font-size: 10px;
 }
@@ -26,6 +27,10 @@ p {
 
 #start-button:hover {
     cursor: pointer;
+}
+
+#high-score {
+    font-size: 20px;
 }
 
 #gameboard {
