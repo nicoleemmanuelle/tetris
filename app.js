@@ -16,9 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     squares.forEach(square => {
       if (square.classList.contains('taken-permanently')) {
         square.innerHTML = "&nbsp=&nbsp"
+      } else if (square.classList.contains('filler')) {
+        square.innerHTML = ""
       } else if (square.classList.contains('bottom-border')) {
         square.innerHTML = "&nbsp&#92;/&nbsp"
-      }  else {
+      }   else {
         square.innerHTML = "&nbsp&nbsp&nbsp."
       }
       
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'green',
       'purple',
       'yellow',
-      'blue'
+      'aqua'
     ]
   
     //The Tetrominoes
@@ -130,7 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
     /*document.addEventListener('keydown', control)*/
   
     //move down function
-    function moveDown() {
+    function moveDown() { 
+      displayShape()
       if (current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
         freeze()
       } else {
@@ -150,8 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
         random = nextRandom
         nextRandom = Math.floor(Math.random() * theTetrominoes.length)
         currentRotation = 0
-        current = theTetrominoes[random][currentRotation]
         currentPosition = 3
+        current = theTetrominoes[random][currentRotation]
         draw()
         displayShape()
         addScore()
@@ -330,10 +333,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       else {
         isGameOver = false
-        draw()
+        //draw()
         timerId = setInterval(moveDown, 400)
         //nextRandom = Math.floor(Math.random()*theTetrominoes.length)
-        displayShape()
+        //displayShape()
         document.addEventListener('keydown', control)
       }
     })
@@ -377,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //game over
     function gameOver() {
       if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
-        draw()
+          draw()
           scoreDisplay.innerHTML = 'end'
           startBtn.innerHTML = 'New Game'
           clearInterval(timerId)
