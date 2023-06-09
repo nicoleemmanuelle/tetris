@@ -12,16 +12,20 @@
     <title>Tetris</title>
 </head>
 <body>
-    <h1>Score: <span id="score">0</span></h1>
+    <h1>TETRIS</h1>
+    <h2 id="score-header">Score: <span id="score">0</span></h2>
     <button id="start-button">Start/Pause</button>
-    <h2 id="high-score">High Score: <span id="high-score-value">0</span></h2>
-    <h2>Instructions:</h2>
+    <h3 id="high-score">High Score: <span id="high-score-value">0</span></h3>
+    <h3>Instructions:</h3>
     <p>UP/W/I: ROTATE</p>
     <p>DOWN/S/K: MOVE DOWN</p>
     <p>LEFT/A/J: MOVE LEFT</p>
     <p>RIGHT/D/L: MOVE  RIGHT</p>
+    
+    
 
     <div id="gameboard">
+        <div id="game-over-container"><h3 id="game-over"></h3></div>
         <div class="border">
             <div class="left-border"></div>
             <div class="right-border"></div>
