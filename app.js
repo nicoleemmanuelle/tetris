@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.querySelector('#score')
   const highScoreValue = document.querySelector('#high-score-value')
   const startBtn = document.querySelector('#start-button')
+  const gameOverHeader = document.querySelector('#game-over')
+  const gameOverContainer = document.querySelector('#game-over-container')
   const width = 10
   let nextRandom = 0
   let timerId
@@ -394,7 +396,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function gameOver() {
     if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         draw()
-        scoreDisplay.innerHTML = 'end'
+        //scoreDisplay.innerHTML = 'end'
+        gameOverHeader.innerHTML = 'GAME OVER!'
+        gameOverContainer.style.backgroundColor = '#1ac550'
         startBtn.innerHTML = 'New Game'
         clearInterval(timerId)
         timerId = null
