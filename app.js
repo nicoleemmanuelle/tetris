@@ -3,13 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let squares = Array.from(document.querySelectorAll('.grid div'))
   let smallSquares = Array.from(document.querySelectorAll('.mini-grid div'))
   const scoreDisplay = document.querySelector('#score')
-  const newGame = document.querySelector('#new-game')
+  const highScoreValue = document.querySelector('#high-score-value')
   const startBtn = document.querySelector('#start-button')
   const width = 10
   let nextRandom = 0
   let timerId
   let score = 0
   let isGameOver = false
+  let highScore = 0
   let iIsPrevAtLeft = false
 
   //Add dots to gameboard
@@ -24,6 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
       square.innerHTML = "&nbsp&nbsp&nbsp."
     }
     
+  //Update high score
+  highScore = localStorage.getItem("highScore")
+  highScoreValue.innerHTML = highScore
+
   })
   smallSquares.forEach(square => {
     square.innerHTML = "&nbsp&nbsp&nbsp."
@@ -392,7 +397,12 @@ document.addEventListener('DOMContentLoaded', () => {
         timerId = null
         isGameOver = true
         console.log(timerId)
+        console.log(score)
         document.removeEventListener('keydown', control)
+        if (score > highScore) {
+          highScore = score
+          localStorage.setItem("highScore", highScore);
+        }
       }
     }
     //current.some(index => squares[3 + index].classList.contains('taken'))
