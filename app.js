@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
   //Update high score
   highScore = localStorage.getItem("highScore")
+  if (highScore == null) {
+    highScore = 0
+  }
   highScoreValue.innerHTML = highScore
 
   })
