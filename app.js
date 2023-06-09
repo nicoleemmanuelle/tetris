@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerId
     let score = 0
     let isGameOver = false
+    let iIsPrevAtLeft = false
 
     //Add dots to gameboard
     squares.forEach(square => {
@@ -132,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         draw()
         if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
           current.forEach(index => squares[currentPosition + index].classList.add('taken'))
-          gameOver()
         } else {
           undraw()
           currentPosition += width
@@ -154,8 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPosition = 3
         draw()
         displayShape()
+        freeze()
         addScore()
-        gameOver()
         draw()
       }
     }
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     ///FIX ROTATION OF TETROMINOS A THE EDGE 
     function isAtRight() {
-      return current.some(index=> (currentPosition + index + 1) % width === 0)  
+      return current.some(index => (currentPosition + index) % width === width -1)  
     }
     
     function isAtLeft() {
@@ -193,47 +193,91 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function checkRotatedPosition(P){
-        P = P || currentPosition           //get current position.  Then, check if the piece is near the left side.
-        if ((P+1) % width < 4) {           //add 1 because the position index can be 1 less than where the piece is (with how they are indexed).     
-            if (isAtRight()){              //use actual position to check if it's flipped over to right side
-                currentPosition += 1       //if so, add one to wrap it back around
-                checkRotatedPosition(P)    //check again.  Pass position from start, since long block might need to move more.
+      P = P || currentPosition         //get current position.  Then, check if the piece is near the left side.
+      if ((P+1) % width < 4) {         //add 1 because the position index can be 1 less than where the piece is (with how they are indexed).     
+        if (isAtRight()){              //use actual position to check if it's flipped over to right side
+          currentPosition -= 1         //if so, add one to wrap it back around
+          checkRotatedPosition(P)      //check again.  Pass position from start, since long block might need to move more.
+          }
+      }
+      else if (P % width > 5) {
+        if (theTetrominoes[random] == iTetromino) {
+          if (P % width > 7) {
+            if (isAtLeft()) {
+              if (currentRotation === 0) {
+                currentPosition += 1
+              }
+              else {
+                currentPosition += 2
+              }
+            }
+          }
+        }
+        else if (isAtLeft()) {
+          currentPosition += 1
+          checkRotatedPosition(P)
+        }
+      }
+    }
+    
+    function cRP(P) {
+      P = P || currentPosition
+      if (theTetrominoes[random] == iTetromino) {
+        if ((P % width > 7) && (iIsPrevAtLeft))  {
+          if (isAtLeft()){
+            if (currentRotation === 0) {
+              currentPosition += 1
+            }
+            else {
+              currentPosition += 2
+            }
+          }
+        } 
+        else if (P % width < 9) {
+          if (P % width === 7){
+            currentPosition -= 1
+          }
+          else if (P % width === 8) {
+            currentPosition -= 2
+          }
+        }
+      }
+      else {
+        if ((P+1) % width < 4) {         //add 1 because the position index can be 1 less than where the piece is (with how they are indexed).     
+          if (isAtRight()){            //use actual position to check if it's flipped over to right side
+            currentPosition += 1    //if so, add one to wrap it back around
+            checkRotatedPosition(P) //check again.  Pass position from start, since long block might need to move more.
             }
         }
         else if (P % width > 5) {
-            if (isAtLeft()){
-                currentPosition -= 1
-                checkRotatedPosition(P)
-            }
+          if (isAtLeft()){
+            currentPosition -= 1
+          checkRotatedPosition(P)
+          }
         }
+      }
     }
-    
     //rotate the tetromino
     function rotate() {
-        if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
-            freeze()
+        iIsPrevAtLeft = false
+        let tryCurrentRotation = (currentRotation + 1)
+        if(tryCurrentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
+            tryCurrentRotation = 0
         }
-        else {
-            let tryCurrentRotation = (currentRotation + 1)
-            if(tryCurrentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
-                tryCurrentRotation = 0
-            }
-            let tryCurrent = theTetrominoes[random][tryCurrentRotation]
-            if (tryCurrent.some(index => squares[currentPosition + index].classList.contains('taken'))) {
-                
-            } else {
-                undraw()
-                currentRotation ++
-                if(currentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
-                currentRotation = 0
-                }
-                current = theTetrominoes[random][currentRotation]
-                checkRotatedPosition()
-                draw()
-            }
-            
-        }
+        let tryCurrent = theTetrominoes[random][tryCurrentRotation] 
         
+    
+        undraw()
+        iIsPrevAtLeft = current.every(index=> (currentPosition + index) % width < 5)
+        currentRotation ++
+        if(currentRotation === current.length) { //if the current rotation gets to 4, make it go back to 0
+          currentRotation = 0
+        }
+        current = theTetrominoes[random][currentRotation]
+        /*checkRotatedPosition()*/
+        cRP()
+        current = theTetrominoes[random][currentRotation]
+        draw()
     }
     /////////
   
@@ -282,6 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       else {
+        isGameOver = false
         draw()
         timerId = setInterval(moveDown, 400)
         //nextRandom = Math.floor(Math.random()*theTetrominoes.length)
@@ -331,10 +376,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
         scoreDisplay.innerHTML = 'end'
         clearInterval(timerId)
-        timerId = null
+        /*timerId = null*/
         isGameOver = true
+        startBtn.innerHTML = "New game"
         document.removeEventListener('keyup', control)
       }
+      //current.some(index => squares[3 + index].classList.contains('taken'))
     }
   
   })
