@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameOverHeader = document.querySelector('#game-over')
   const gameOverContainer = document.querySelector('#game-over-container')
   const width = 10
+  const speed = 1000
   let nextRandom = 0
   let timerId
   let score = 0
@@ -357,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else {
       isGameOver = false
       //draw()
-      timerId = setInterval(moveDown, 400)
+      timerId = setInterval(moveDown, speed)
       //displayShape()
       document.addEventListener('keydown', control)
     }
@@ -400,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
       undraw()
       displayShape()
       document.addEventListener('keydown', control)
-      timerId = setInterval(moveDown, 400)
+      timerId = setInterval(moveDown, speed)
     }
 
     if (clearedLines === 1) {
