@@ -18,15 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let tetrominoesIndexes = [0, 1, 2, 3, 4, 5, 6]
 
   //Add dots to gameboard
+  const occupied = '[]'
+  const unoccupied = '&nbsp.'
   squares.forEach(square => {
     if (square.classList.contains('taken-permanently')) {
-      square.innerHTML = "&nbsp=&nbsp"
+      square.innerHTML = "=="
     } else if (square.classList.contains('filler')) {
       square.innerHTML = ""
     } else if (square.classList.contains('bottom-border')) {
-      square.innerHTML = "&nbsp&#92;/&nbsp"
+      square.innerHTML = "&#92;/"
     }   else {
-      square.innerHTML = "&nbsp&nbsp&nbsp."
+      //square.innerHTML = "&nbsp&nbsp&nbsp."
+      square.innerHTML = "&nbsp."
     }
     
   //Update high score
@@ -38,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })
   smallSquares.forEach(square => {
-    square.innerHTML = "&nbsp&nbsp&nbsp."
+    square.innerHTML = unoccupied
   })
   const colors = [
     'blue',
@@ -126,8 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function draw() {
     current.forEach(index => {
       squares[currentPosition + index].classList.add('tetromino')
-      squares[currentPosition + index].style.backgroundColor = colors[random]
-      squares[currentPosition + index].innerHTML = "[ ]"
+      //squares[currentPosition + index].style.backgroundColor = colors[random]//
+      squares[currentPosition + index].innerHTML = occupied
     })
   }
 
@@ -136,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     current.forEach(index => {
       squares[currentPosition + index].classList.remove('tetromino')
       squares[currentPosition + index].style.backgroundColor = ''
-      squares[currentPosition + index].innerHTML = "&nbsp&nbsp&nbsp."
+      squares[currentPosition + index].innerHTML = unoccupied
     })
   }
 
@@ -334,12 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
     displaySquares.forEach(square => {
       square.classList.remove('tetromino')
       square.style.backgroundColor = ''
-      square.innerHTML = "&nbsp&nbsp&nbsp."
+      square.innerHTML = unoccupied
     })
     upNextTetrominoes[nextRandom].forEach( index => {
       displaySquares[displayIndex + index].classList.add('tetromino')
       //displaySquares[displayIndex + index].style.backgroundColor = colors[nextRandom]
-      displaySquares[displayIndex + index].innerHTML = "[ ]"
+      displaySquares[displayIndex + index].innerHTML = occupied
     })
   }
 
@@ -383,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
             squares[index].classList.remove('taken')
             squares[index].classList.remove('tetromino')
             squares[index].style.backgroundColor = ''
-            squares[index].innerHTML = "&nbsp&nbsp&nbsp."
+            squares[index].innerHTML = unoccupied
         })
         const squaresRemoved = squares.splice(i, width)
         //squares = squaresRemoved.concat(squares)
