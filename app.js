@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isGameOver = false
   let highScore = 0
   let iIsPrevAtLeft = false
+  let tetrominoesIndexes = [0, 1, 2, 3, 4, 5, 6]
 
   //Add dots to gameboard
   squares.forEach(square => {
@@ -103,12 +104,23 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPosition = 3
   let currentRotation = 0
 
-  //console.log(theTetrominoes[0][0])
 
   //randomly select a Tetromino and its first rotation
-  let random = Math.floor(Math.random()*theTetrominoes.length)
+  //let random = Math.floor(Math.random()*theTetrominoes.length)
+  //let current = theTetrominoes[random][0]
+  let random = generateNextRandom()
   let current = theTetrominoes[random][0]
+  nextRandom = generateNextRandom()
+  
 
+  function generateNextRandom() {
+    let nextRandomIndex = Math.floor(Math.random()*tetrominoesIndexes.length)
+    let nextRandomPiece = tetrominoesIndexes.splice(nextRandomIndex, 1)
+    if (tetrominoesIndexes.length === 0) {
+      tetrominoesIndexes = [0, 1, 2, 3, 4, 5, 6]
+    }
+    return nextRandomPiece
+  }
   //draw the Tetromino
   function draw() {
     current.forEach(index => {
@@ -161,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
       current.forEach(index => squares[currentPosition + index].classList.add('taken'))
       //start a new tetromino falling
       random = nextRandom
-      nextRandom = Math.floor(Math.random() * theTetrominoes.length)
+      //nextRandom = Math.floor(Math.random() * theTetrominoes.length)
+      nextRandom = generateNextRandom()
       currentRotation = 0
       currentPosition = 3
       current = theTetrominoes[random][currentRotation]
@@ -345,7 +358,6 @@ document.addEventListener('DOMContentLoaded', () => {
       isGameOver = false
       //draw()
       timerId = setInterval(moveDown, 400)
-      //nextRandom = Math.floor(Math.random()*theTetrominoes.length)
       //displayShape()
       document.addEventListener('keydown', control)
     }
@@ -353,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //add score
   function addScore() {
+    let clearedLines = 0
     for (let i = 0; i < 209; i +=width) {
       const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9]
       
@@ -363,23 +376,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if(row.every(index => squares[index].classList.contains('taken'))) {
           
-          timerId = null
-          score +=10
-          scoreDisplay.innerHTML = score
-          row.forEach(index => {
-              squares[index].classList.remove('taken')
-              squares[index].classList.remove('tetromino')
-              squares[index].style.backgroundColor = ''
-              squares[index].innerHTML = "&nbsp&nbsp&nbsp."
-          })
-          const squaresRemoved = squares.splice(i, width)
-          //squares = squaresRemoved.concat(squares)
-          //squares.forEach(cell => grid.appendChild(cell))
-          squares.splice(10, 0, 
-            squaresRemoved[0], squaresRemoved[1], squaresRemoved[2], squaresRemoved[3], 
-            squaresRemoved[4], squaresRemoved[5], squaresRemoved[6], squaresRemoved[7], 
-            squaresRemoved[8], squaresRemoved[9])
-          squares.forEach(cell => grid.appendChild(cell))
+        clearedLines ++
+        timerId = null
+        row.forEach(index => {
+            squares[index].classList.remove('taken')
+            squares[index].classList.remove('tetromino')
+            squares[index].style.backgroundColor = ''
+            squares[index].innerHTML = "&nbsp&nbsp&nbsp."
+        })
+        const squaresRemoved = squares.splice(i, width)
+        //squares = squaresRemoved.concat(squares)
+        //squares.forEach(cell => grid.appendChild(cell))
+        squares.splice(10, 0, 
+          squaresRemoved[0], squaresRemoved[1], squaresRemoved[2], squaresRemoved[3], 
+          squaresRemoved[4], squaresRemoved[5], squaresRemoved[6], squaresRemoved[7], 
+          squaresRemoved[8], squaresRemoved[9])
+        squares.forEach(cell => grid.appendChild(cell))
 
           
       }
@@ -390,6 +402,17 @@ document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', control)
       timerId = setInterval(moveDown, 400)
     }
+
+    if (clearedLines === 1) {
+      score += 40
+    } else if (clearedLines === 2) {
+      score += 100
+    } else if (clearedLines === 3) {
+      score += 300
+    } else if (clearedLines === 4) {
+      score += 1200
+    }
+    scoreDisplay.innerHTML = score
   }
 
   //game over
