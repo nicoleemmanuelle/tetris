@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
   //Update high score
-  highScore = localStorage.getItem("highScore")
+  highScore = sessionStorage.getItem("highScore")
   if (highScore == null) {
     highScore = 0
   }
@@ -432,8 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('keydown', control)
         if (score > highScore) {
           highScore = score
-          localStorage.setItem("highScore", highScore);
-          highScoreValue.innerHTML = localStorage.getItem("highScore")
+          sessionStorage.setItem("highScore", highScore);
+          highScoreValue.innerHTML = sessionStorage.getItem("highScore")
         }
       }
     }
