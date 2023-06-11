@@ -25,14 +25,12 @@ h3 {
 p {
     font-size: 10px;
 }
-#start-button {
+
+#start-button, #color-button {
     background-color: #1ac550;
     color: black;
     font-family: 'Press Start 2P', cursive;
     border: none;
-}
-
-#start-button:hover {
     cursor: pointer;
 }
 
