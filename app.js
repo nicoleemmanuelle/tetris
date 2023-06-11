@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start
     else {
       isGameOver = false
-      //draw()
+      draw()
       timerId = setInterval(moveDown, speed)
       //displayShape()
       document.addEventListener('keydown', control)
