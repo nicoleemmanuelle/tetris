@@ -160,22 +160,39 @@ document.addEventListener('DOMContentLoaded', () => {
       moveRight()
     } else if ((e.keyCode === 40) || (e.keyCode === 83) || (e.keyCode === 75)) {
       moveDown()
-    } else if (e.keyCode === 27) {
-      location.reload(); // New Game or Retry
-    } else if (e.keyCode === 8) {
-      clearInterval(timerId)
-      timerId = null
-      document.removeEventListener('keydown', control)
-      document.removeEventListener('keyup', controlHardDrop) // Pause
-    }
+    } 
   }
 
   /*document.addEventListener('keydown', control)*/
   function controlHardDrop(e) {
     if (e.keyCode === 32) {
       hardDrop()
+    } 
+  }
+
+  function controlSettings(e) {
+    if (e.keyCode === 27) {
+      location.reload(); // New Game or Retry
+    } else if (e.keyCode === 8) {
+      // Pause
+      if (timerId) {
+        clearInterval(timerId)
+        timerId = null
+        document.removeEventListener('keydown', control)
+        document.removeEventListener('keyup', controlHardDrop)
+      } 
+      // Start
+      else {
+        isGameOver = false
+        //draw()
+        timerId = setInterval(moveDown, speed)
+        //displayShape()
+        document.addEventListener('keydown', control)
+        document.addEventListener('keyup', controlHardDrop)
+      }
     }
   }
+  document.addEventListener('keyup', controlSettings)
 
   //move down function
   function moveDown() { 
