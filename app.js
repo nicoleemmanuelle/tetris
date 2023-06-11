@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.querySelector('#score')
   const highScoreValue = document.querySelector('#high-score-value')
   const startBtn = document.querySelector('#start-button')
+  const colorBtn = document.querySelector('#color-button')
   const gameOverHeader = document.querySelector('#game-over')
   const gameOverContainer = document.querySelector('#game-over-container')
   const width = 10
@@ -35,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (square.classList.contains('bottom-border')) {
       square.innerHTML = "&#92;/"
     }   else {
-      //square.innerHTML = "&nbsp&nbsp&nbsp."
       square.innerHTML = "&nbsp."
     }
     
@@ -132,12 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return nextRandomPiece
   }
+
   //draw the Tetromino
   function draw() {
     current.forEach(index => {
       squares[currentPosition + index].classList.add('tetromino')
       squares[currentPosition + index].style.color = '#1ac550' 
-      squares[currentPosition + index].style.backgroundColor = colors[random] //
+      if (colorBtn.innerHTML === 'Color OFF') {
+        squares[currentPosition + index].style.backgroundColor = colors[random]
+      }
       squares[currentPosition + index].innerHTML = occupied
     })
   }
@@ -390,12 +393,23 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     upNextTetrominoes[nextRandom].forEach( index => {
       displaySquares[displayIndex + index].classList.add('tetromino')
-      //displaySquares[displayIndex + index].style.backgroundColor = colors[nextRandom]
+      if (colorBtn.innerHTML === 'Color OFF') {
+        displaySquares[displayIndex + index].style.backgroundColor = colors[nextRandom]
+      }
       displaySquares[displayIndex + index].innerHTML = occupied
     })
   }
 
-  //add functionality to the button
+  //add functionality to the color button
+  colorBtn.addEventListener('click', () => {
+    if (colorBtn.innerHTML === 'Color ON') {
+      colorBtn.innerHTML = 'Color OFF'
+    } else {
+      colorBtn.innerHTML = 'Color ON'
+    }
+  })
+
+  //add functionality to the start button
   startBtn.addEventListener('click', () => {
     // Pause
     if (timerId) {
@@ -410,10 +424,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Start
     else {
+      colorBtn.style.visibility = 'hidden'
       isGameOver = false
       draw()
+      displayShape()
       timerId = setInterval(moveDown, speed)
-      //displayShape()
       document.addEventListener('keydown', control)
       document.addEventListener('keyup', controlHardDrop)
     }
