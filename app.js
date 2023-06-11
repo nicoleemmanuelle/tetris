@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function draw() {
     current.forEach(index => {
       squares[currentPosition + index].classList.add('tetromino')
+      squares[currentPosition + index].style.color = '#1ac550' 
       squares[currentPosition + index].style.backgroundColor = colors[random] //
       squares[currentPosition + index].innerHTML = occupied
     })
@@ -145,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function undraw() {
     current.forEach(index => {
       squares[currentPosition + index].classList.remove('tetromino')
+      squares[currentPosition + index].style.color = '' 
       squares[currentPosition + index].style.backgroundColor = ''
       squares[currentPosition + index].innerHTML = unoccupied
     })
@@ -232,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
       displayShape()
       addScore()
       gameOver()
+      draw()
     }
   }
 
