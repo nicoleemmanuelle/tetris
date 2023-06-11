@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gameOverHeader = document.querySelector('#game-over')
   const gameOverContainer = document.querySelector('#game-over-container')
   const width = 10
-  const speed = 1000
+  const speed = 400
   let nextRandom = 0
   let timerId
   let score = 0
@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let highScore = 0
   let iIsPrevAtLeft = false
   let tetrominoesIndexes = [0, 1, 2, 3, 4, 5, 6]
+
+  //disable button click with keyup
+  document.querySelectorAll("button").forEach( function(item) {
+    item.addEventListener('focus', function() {
+        this.blur();
+    })
+  })
 
   //Add dots to gameboard
   const occupied = '[]'
@@ -156,6 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   /*document.addEventListener('keydown', control)*/
+  function controlHardDrop(e) {
+    if (e.keyCode === 32) {
+      hardDrop()
+    }
+  }
 
   //move down function
   function moveDown() { 
@@ -168,7 +180,16 @@ document.addEventListener('DOMContentLoaded', () => {
       draw()
       freeze()
     }
-      
+  }
+  
+  //hard drop function
+  function hardDrop() { 
+    undraw()
+    while (!current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
+      currentPosition += width
+    }
+    draw()
+    freeze()
   }
 
   //freeze function
@@ -352,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(timerId)
       timerId = null
       document.removeEventListener('keydown', control)
+      document.removeEventListener('keyup', controlHardDrop)
     } 
 
     else if (isGameOver && timerId === null) {
@@ -364,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
       timerId = setInterval(moveDown, speed)
       //displayShape()
       document.addEventListener('keydown', control)
+      document.addEventListener('keyup', controlHardDrop)
     }
   })
 
@@ -377,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(timerId)
       timerId = null
       document.removeEventListener('keydown', control)
+      document.removeEventListener('keyup', controlHardDrop)
 
       if(row.every(index => squares[index].classList.contains('taken'))) {
           
@@ -396,14 +420,13 @@ document.addEventListener('DOMContentLoaded', () => {
           squaresRemoved[4], squaresRemoved[5], squaresRemoved[6], squaresRemoved[7], 
           squaresRemoved[8], squaresRemoved[9])
         squares.forEach(cell => grid.appendChild(cell))
-
-          
       }
       
       // resume
       undraw()
       displayShape()
       document.addEventListener('keydown', control)
+      document.addEventListener('keyup', controlHardDrop)
       timerId = setInterval(moveDown, speed)
     }
 
@@ -433,6 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(timerId)
         console.log(score)
         document.removeEventListener('keydown', control)
+        document.removeEventListener('keyup', controlHardDrop)
         if (score > highScore) {
           highScore = score
           sessionStorage.setItem("highScore", highScore);
