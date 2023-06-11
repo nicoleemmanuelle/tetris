@@ -403,7 +403,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // resume
       undraw()
       displayShape()
-      document.addEventListener('keydown', control)
+      setTimeout(() => {
+        document.addEventListener('keydown', control)
+      }, 250)
       timerId = setInterval(moveDown, speed)
     }
 
