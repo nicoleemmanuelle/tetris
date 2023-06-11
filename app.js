@@ -160,8 +160,16 @@ document.addEventListener('DOMContentLoaded', () => {
       moveRight()
     } else if ((e.keyCode === 40) || (e.keyCode === 83) || (e.keyCode === 75)) {
       moveDown()
+    } else if (e.keyCode === 27) {
+      location.reload(); // New Game or Retry
+    } else if (e.keyCode === 8) {
+      clearInterval(timerId)
+      timerId = null
+      document.removeEventListener('keydown', control)
+      document.removeEventListener('keyup', controlHardDrop) // Pause
     }
   }
+
   /*document.addEventListener('keydown', control)*/
   function controlHardDrop(e) {
     if (e.keyCode === 32) {
@@ -369,17 +377,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //add functionality to the button
   startBtn.addEventListener('click', () => {
+    // Pause
     if (timerId) {
       clearInterval(timerId)
       timerId = null
       document.removeEventListener('keydown', control)
       document.removeEventListener('keyup', controlHardDrop)
     } 
-
+    // New Game
     else if (isGameOver && timerId === null) {
       location.reload();
     }
-    
+    // Start
     else {
       isGameOver = false
       //draw()
