@@ -156,23 +156,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   //assign functions to keyCodes
-  function control(e) {
+  function controlKeyDown(e) {
     if((e.keyCode === 37) || (e.keyCode === 65) || (e.keyCode === 74)) {
       moveLeft()
-    } else if ((e.keyCode === 38) || (e.keyCode === 87) || (e.keyCode === 73)) {
-      rotate()
     } else if ((e.keyCode === 39) || (e.keyCode === 68) || (e.keyCode === 76)) {
       moveRight()
     } else if ((e.keyCode === 40) || (e.keyCode === 83) || (e.keyCode === 75)) {
       moveDown()
     } 
   }
-
-  /*document.addEventListener('keydown', control)*/
-  function controlHardDrop(e) {
+  /*document.addEventListener('keydown', controlKeyDown)*/
+  
+  function controlKeyUp(e) {
     if (e.keyCode === 32) {
       hardDrop()
-    } 
+    } else if ((e.keyCode === 38) || (e.keyCode === 87) || (e.keyCode === 73)) {
+      rotate()
+    }
   }
 
   function controlSettings(e) {
@@ -183,17 +183,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (timerId) {
         clearInterval(timerId)
         timerId = null
-        document.removeEventListener('keydown', control)
-        document.removeEventListener('keyup', controlHardDrop)
+        document.removeEventListener('keydown', controlKeyDown)
+        document.removeEventListener('keyup', controlKeyUp)
       } 
       // Start
       else {
         isGameOver = false
-        //draw()
+        draw()
+        displayShape()
         timerId = setInterval(moveDown, speed)
-        //displayShape()
-        document.addEventListener('keydown', control)
-        document.addEventListener('keyup', controlHardDrop)
+        document.addEventListener('keydown', controlKeyDown)
+        document.addEventListener('keyup', controlKeyUp)
       }
     }
   }
@@ -415,8 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (timerId) {
       clearInterval(timerId)
       timerId = null
-      document.removeEventListener('keydown', control)
-      document.removeEventListener('keyup', controlHardDrop)
+      document.removeEventListener('keydown', controlKeyDown)
+      document.removeEventListener('keyup', controlKeyUp)
     } 
     // New Game
     else if (isGameOver && timerId === null) {
@@ -429,8 +429,8 @@ document.addEventListener('DOMContentLoaded', () => {
       draw()
       displayShape()
       timerId = setInterval(moveDown, speed)
-      document.addEventListener('keydown', control)
-      document.addEventListener('keyup', controlHardDrop)
+      document.addEventListener('keydown', controlKeyDown)
+      document.addEventListener('keyup', controlKeyUp)
     }
   })
 
@@ -443,8 +443,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // pause 
       clearInterval(timerId)
       timerId = null
-      document.removeEventListener('keydown', control)
-      document.removeEventListener('keyup', controlHardDrop)
+      document.removeEventListener('keydown', controlKeyDown)
+      document.removeEventListener('keyup', controlKeyUp)
 
       if(row.every(index => squares[index].classList.contains('taken'))) {
           
@@ -469,8 +469,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // resume
       undraw()
       displayShape()
-      document.addEventListener('keydown', control)
-      document.addEventListener('keyup', controlHardDrop)
+      document.addEventListener('keydown', controlKeyDown)
+      document.addEventListener('keyup', controlKeyUp)
       timerId = setInterval(moveDown, speed)
     }
 
@@ -499,8 +499,8 @@ document.addEventListener('DOMContentLoaded', () => {
         isGameOver = true
         console.log(timerId)
         console.log(score)
-        document.removeEventListener('keydown', control)
-        document.removeEventListener('keyup', controlHardDrop)
+        document.removeEventListener('keydown', controlKeyDown)
+        document.removeEventListener('keyup', controlKeyUp)
         if (score > highScore) {
           highScore = score
           sessionStorage.setItem("highScore", highScore);
