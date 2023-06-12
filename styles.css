@@ -1,3 +1,7 @@
+html {
+    min-width: 1000px;
+}
+
 body {
     color: #1ac550;
     background-color: black;
@@ -26,6 +30,19 @@ p {
     font-size: 10px;
 }
 
+#all-contents {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#text {
+    /*background-color: antiquewhite;*/
+    width: 450px;
+}
+
 #start-button, #color-button {
     background-color: #1ac550;
     color: black;
@@ -52,15 +69,26 @@ p {
     text-align: center;
 }
 
-#gameboard {
-    /*position: relative;*/
+#gameboard-container {
     /*background-color: aqua;*/
     width: 350px;
-    height: 440px;
+    height: 460px;
+    /*
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);*/
+}
+
+#gameboard {
+    /*position: relative;*/
+    width: 350px;
+    height: 460px;
+    /*margin-left: 110px;*/
+    /*position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
     /*text-align: center;*/
 }
 
@@ -75,9 +103,11 @@ p {
     width: 20px;
     height: 20px;
 }
+
 .right-border {
     margin-left: 200px;
 }
+
 .container {
     display: flex;
     margin-left: 20px;
